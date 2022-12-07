@@ -62,7 +62,7 @@ knitr::include_graphics(c("/Users/leonardo.urbiola_fox/Desktop/R Studio/Audience
 <br/>
 <br/> <br/> 
 
-The following graph shows the most used social media platforms based on our company wide demographics and it shows the two most popular age groups in our audience. 
+The following graphs show the most used social media platforms based on our company wide demographics and it shows the two most popular age groups in our audience. 
 
 <br/> <br/> 
 ```{r echo=FALSE, fig.align='center', message=FALSE, warning=FALSE, out.height="80%", out.width="80%", paged.print=FALSE}
