@@ -1,0 +1,2732 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Avg Income</title>
+
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Audience Report</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Division 1</a>
+</li>
+<li>
+  <a href="about.html">Division 2</a>
+</li>
+<li>
+  <a href="Branch.html">Branch Comparison</a>
+</li>
+<li>
+  <a href="Income.html">Avg Income</a>
+</li>
+<li>
+  <a href="Overall.html">Company Wide Summary</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Avg Income</h1>
+
+</div>
+
+
+<script type="text/javascript">
+ function showhide(id) {
+    var e = document.getElementById(id);
+    e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+ }
+ 
+ function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+ 
+</script>
+<table>
+<tbody>
+<tr class="odd">
+<td>This report shows the income average for the top 10 cities with the
+most customers per branch in the year 2022.</td>
+</tr>
+</tbody>
+</table>
+<div id="customers-data"
+class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">Customers Data</h3>
+<div style="float:left;width:125px;">
+<p><img src="Income_files/figure-html/unnamed-chunk-2-1.png" width="96" /></p>
+</div>
+<p><strong>Choose a Division</strong></p>
+<div id="division-1" class="section level4">
+<h4>Division 1</h4>
+<div style="padding-left:125px;">
+
+
+<div class="tab">
+<p><button class="tablinks" onclick="openTab(event, 'Albany')">Albany</button>
+<button class="tablinks" onclick="openTab(event, 'Buffalo')">Buffalo</button>
+<button class="tablinks" onclick="openTab(event, 'LongIsland')">Long
+Island</button>
+<button class="tablinks" onclick="openTab(event, 'Rochester')">Rochester</button>
+<button class="tablinks" onclick="openTab(event, 'Syracuse')">Syracuse</button>
+<button class="tablinks" onclick="openTab(event, 'HudsonValley')">Hudson
+Valley</button>
+<button class="tablinks" onclick="openTab(event, 'Harrisburg')">Harrisburg</button>
+<button class="tablinks" onclick="openTab(event, 'CentralNJ')">Central
+NJ</button>
+<button class="tablinks" onclick="openTab(event, 'Providence')">RI -
+Providence </button>
+<button class="tablinks" onclick="openTab(event, 'Boston')">Boston</button>
+<button class="tablinks" onclick="openTab(event, 'Bloomington')">Bloomington</button>
+<button class="tablinks" onclick="openTab(event, 'CT')">CT</button>
+<button class="tablinks" onclick="openTab(event, 'Manchester')">Manchester
+</button>
+<button class="tablinks" onclick="openTab(event, 'Pittsburgh')">Pittsburgh</button></p>
+</div>
+<div id="Albany" class="tabcontent">
+<p>
+<p><strong>Albany</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Albany</td>
+<td align="center">183</td>
+<td align="center">$72,534</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Schenectady</td>
+<td align="center">133</td>
+<td align="center">$64,454</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Clifton Park</td>
+<td align="center">124</td>
+<td align="center">$151,429</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Ballston Spa</td>
+<td align="center">88</td>
+<td align="center">$113,652</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Troy</td>
+<td align="center">74</td>
+<td align="center">$66,570</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Queensbury</td>
+<td align="center">71</td>
+<td align="center">$109,631</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Delmar</td>
+<td align="center">53</td>
+<td align="center">$137,181</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Latham</td>
+<td align="center">46</td>
+<td align="center">$106,936</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Voorheesville</td>
+<td align="center">45</td>
+<td align="center">$123,896</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Ballston Lake</td>
+<td align="center">42</td>
+<td align="center">$113,652</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Buffalo" class="tabcontent">
+<p>
+<p><strong>Buffalo</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Buffalo</td>
+<td align="center">1098</td>
+<td align="center">$61,174</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Hamburg</td>
+<td align="center">293</td>
+<td align="center">$103,569</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Lancaster</td>
+<td align="center">235</td>
+<td align="center">$74,097</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Lockport</td>
+<td align="center">213</td>
+<td align="center">$65,537</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Grand Island</td>
+<td align="center">197</td>
+<td align="center">$109,829</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">North Tonawanda</td>
+<td align="center">190</td>
+<td align="center">$73,259</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">East Amherst</td>
+<td align="center">169</td>
+<td align="center">$111,468</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Orchard Park</td>
+<td align="center">149</td>
+<td align="center">$121,282</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Niagara Falls</td>
+<td align="center">141</td>
+<td align="center">$59,318</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">West Seneca</td>
+<td align="center">101</td>
+<td align="center">$84,680</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="LongIsland" class="tabcontent">
+<p>
+<p><strong>Long Island</strong></p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="19%" />
+<col width="38%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Bay Shore</td>
+<td align="center">110</td>
+<td align="center">$124,847</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Baldwin</td>
+<td align="center">89</td>
+<td align="center">$148,782</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Huntington</td>
+<td align="center">84</td>
+<td align="center">$180,119</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Huntington Station</td>
+<td align="center">78</td>
+<td align="center">$197,502</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Shirley</td>
+<td align="center">57</td>
+<td align="center">$141,151</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Lindenhurst</td>
+<td align="center">51</td>
+<td align="center">$121,308</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Dix Hills</td>
+<td align="center">50</td>
+<td align="center">$55,606</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Amityville</td>
+<td align="center">47</td>
+<td align="center">$115,308</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Sayville</td>
+<td align="center">46</td>
+<td align="center">$167,703</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Port Jefferson Station</td>
+<td align="center">46</td>
+<td align="center">$156,875</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Rochester" class="tabcontent">
+<p>
+<p><strong>Rochester</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Salary</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Rochester</td>
+<td align="center">564</td>
+<td align="center">$58,785</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Webster</td>
+<td align="center">183</td>
+<td align="center">$100,707</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Fairport</td>
+<td align="center">148</td>
+<td align="center">$106,245</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Pittsford</td>
+<td align="center">131</td>
+<td align="center">$190,756</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Penfield</td>
+<td align="center">72</td>
+<td align="center">$123,604</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Victor</td>
+<td align="center">561</td>
+<td align="center">$96,006</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Irondequoit</td>
+<td align="center">37</td>
+<td align="center">$86,307</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">West Henrietta</td>
+<td align="center">37</td>
+<td align="center">$86,918</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Hilton</td>
+<td align="center">33</td>
+<td align="center">$75,254</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Macedon</td>
+<td align="center">30</td>
+<td align="center">$83,895</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Syracuse" class="tabcontent">
+<p>
+<p><strong>Syracuse</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Syracuse</td>
+<td align="center">192</td>
+<td align="center">$57,880</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Baldwinsville</td>
+<td align="center">81</td>
+<td align="center">$84,180</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Liverpool</td>
+<td align="center">71</td>
+<td align="center">$85,953</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Cicero</td>
+<td align="center">38</td>
+<td align="center">$96,908</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Manlius</td>
+<td align="center">37</td>
+<td align="center">$127,476</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Fayetteville</td>
+<td align="center">29</td>
+<td align="center">$124,065</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Auburn</td>
+<td align="center">25</td>
+<td align="center">$108,217</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">East Syracuse</td>
+<td align="center">22</td>
+<td align="center">$60,581</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Oswego</td>
+<td align="center">22</td>
+<td align="center">$79,912</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Jamesville</td>
+<td align="center">20</td>
+<td align="center">$99,628</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="HudsonValley" class="tabcontent">
+<p>
+<p><strong>Hudson Valley</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">New City</td>
+<td align="center">71</td>
+<td align="center">$161,536</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">White Plains</td>
+<td align="center">50</td>
+<td align="center">$148,070</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Poughkeepsie</td>
+<td align="center">36</td>
+<td align="center">$85,705</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Carmel Hamlet</td>
+<td align="center">34</td>
+<td align="center">$131,088</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Yonkers</td>
+<td align="center">30</td>
+<td align="center">$99,924</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">West Nyack</td>
+<td align="center">30</td>
+<td align="center">$125,695</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Spring Valley</td>
+<td align="center">30</td>
+<td align="center">$66,366</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Nyack</td>
+<td align="center">27</td>
+<td align="center">$141,890</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Mahopac</td>
+<td align="center">26</td>
+<td align="center">$139,672</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Brewster</td>
+<td align="center">26</td>
+<td align="center">$76,315</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Harrisburg" class="tabcontent">
+<p>
+<p><strong>Harrisburg</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Harrisburg</td>
+<td align="center">328</td>
+<td align="center">$92,506</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Mechanicsburg</td>
+<td align="center">269</td>
+<td align="center">$80,395</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">York</td>
+<td align="center">154</td>
+<td align="center">$81,625</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Carlisle</td>
+<td align="center">129</td>
+<td align="center">$264,092</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Dillsburg</td>
+<td align="center">119</td>
+<td align="center">$77,993</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Lebanon</td>
+<td align="center">114</td>
+<td align="center">$88,911</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Elizabethtown</td>
+<td align="center">90</td>
+<td align="center">$77,871</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Hanover</td>
+<td align="center">84</td>
+<td align="center">$67,802</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Camp Hill</td>
+<td align="center">75</td>
+<td align="center">$77,750</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Lancaster</td>
+<td align="center">63</td>
+<td align="center">$101,199</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="CentralNJ" class="tabcontent">
+<p>
+<p><strong>Central NJ</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="17%" />
+<col width="21%" />
+<col width="43%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Willingboro</td>
+<td align="center">163</td>
+<td align="center">$95,459</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Bridgewater Township</td>
+<td align="center">151</td>
+<td align="center">$168,911</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Hamilton Township</td>
+<td align="center">148</td>
+<td align="center">$39,677</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Trenton</td>
+<td align="center">107</td>
+<td align="center">$66,002</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Princeton</td>
+<td align="center">104</td>
+<td align="center">$257,390</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Hillsborough Township</td>
+<td align="center">92</td>
+<td align="center">$176,371</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Ewing Township</td>
+<td align="center">71</td>
+<td align="center">$92,374</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Delran</td>
+<td align="center">47</td>
+<td align="center">$117,847</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Lawrence Township</td>
+<td align="center">46</td>
+<td align="center">$140,329</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Flemington</td>
+<td align="center">45</td>
+<td align="center">$102,121</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Providence" class="tabcontent">
+<p>
+<p><strong>Providence</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Cranston</td>
+<td align="center">169</td>
+<td align="center">$95,125</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Providence</td>
+<td align="center">136</td>
+<td align="center">$87,573</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Plymouth</td>
+<td align="center">106</td>
+<td align="center">$126,982</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Warwick</td>
+<td align="center">105</td>
+<td align="center">$95,546</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Boston</td>
+<td align="center">81</td>
+<td align="center">$120,939</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Pawtucket</td>
+<td align="center">76</td>
+<td align="center">$72,925</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Johnston</td>
+<td align="center">53</td>
+<td align="center">$87,570</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Tiverton</td>
+<td align="center">53</td>
+<td align="center">$103,353</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Coventry</td>
+<td align="center">52</td>
+<td align="center">$102,486</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Woonsocket</td>
+<td align="center">52</td>
+<td align="center">$65,280</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Boston" class="tabcontent">
+<p>
+<p><strong>Boston</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Haverhill</td>
+<td align="center">85</td>
+<td align="center">$92,934</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">North Andover</td>
+<td align="center">58</td>
+<td align="center">$163,568</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Salisbury</td>
+<td align="center">57</td>
+<td align="center">$117,133</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Danvers</td>
+<td align="center">54</td>
+<td align="center">$125,757</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Ipswich</td>
+<td align="center">52</td>
+<td align="center">$165,120</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Woburn</td>
+<td align="center">49</td>
+<td align="center">$125,532</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Andover</td>
+<td align="center">48</td>
+<td align="center">$199,008</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Reading</td>
+<td align="center">40</td>
+<td align="center">$163,383</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Saugus</td>
+<td align="center">40</td>
+<td align="center">$113,521</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Lexington</td>
+<td align="center">40</td>
+<td align="center">$265,000</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Bloomington" class="tabcontent">
+<p>
+<p><strong>Bloomington</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Bloomington</td>
+<td align="center">112</td>
+<td align="center">$91,121</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Normal</td>
+<td align="center">76</td>
+<td align="center">$83,633</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Champaign</td>
+<td align="center">38</td>
+<td align="center">$80,535</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Peoria</td>
+<td align="center">29</td>
+<td align="center">$81,813</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Savoy</td>
+<td align="center">22</td>
+<td align="center">$105,226</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Urbana</td>
+<td align="center">15</td>
+<td align="center">$61,558</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Washington</td>
+<td align="center">10</td>
+<td align="center">$112,991</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Morton</td>
+<td align="center">10</td>
+<td align="center">$86,654</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Pekin</td>
+<td align="center">9</td>
+<td align="center">$83,652</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Downs</td>
+<td align="center">7</td>
+<td align="center">$46,349</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="CT" class="tabcontent">
+<p>
+<p><strong>CT</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Trumbull</td>
+<td align="center">204</td>
+<td align="center">$164,046</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Norwalk</td>
+<td align="center">181</td>
+<td align="center">$137,201</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Shelton</td>
+<td align="center">180</td>
+<td align="center">$126,860</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Stamford</td>
+<td align="center">178</td>
+<td align="center">$144,516</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Fairfield</td>
+<td align="center">163</td>
+<td align="center">$207,084</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Westport</td>
+<td align="center">132</td>
+<td align="center">$346,206</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Southington</td>
+<td align="center">128</td>
+<td align="center">$127,877</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Glastonbury</td>
+<td align="center">128</td>
+<td align="center">$159,100</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">South Windsor</td>
+<td align="center">119</td>
+<td align="center">$151,129</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Stratford</td>
+<td align="center">119</td>
+<td align="center">$104,119</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Manchester" class="tabcontent">
+<p>
+<p><strong>Manchester</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Nashua</td>
+<td align="center">227</td>
+<td align="center">$101,972</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Manchester</td>
+<td align="center">165</td>
+<td align="center">$83,913</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Derry</td>
+<td align="center">155</td>
+<td align="center">$105,247</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Londonderry</td>
+<td align="center">104</td>
+<td align="center">$133,316</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Bedford</td>
+<td align="center">91</td>
+<td align="center">$175,443</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Merrimack</td>
+<td align="center">78</td>
+<td align="center">$130,814</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Salem</td>
+<td align="center">66</td>
+<td align="center">$113,810</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Hooksett</td>
+<td align="center">65</td>
+<td align="center">$114,381</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Concord</td>
+<td align="center">54</td>
+<td align="center">$93,357</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Windham</td>
+<td align="center">52</td>
+<td align="center">$194,119</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Pittsburgh" class="tabcontent">
+<p>
+<p><strong>Pittsburgh</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Pittsburgh</td>
+<td align="center">323</td>
+<td align="center">$80,248</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Washington</td>
+<td align="center">113</td>
+<td align="center">$55,219</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Canonsburg</td>
+<td align="center">110</td>
+<td align="center">$75,042</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">New Castle</td>
+<td align="center">98</td>
+<td align="center">$47,194</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Wexford</td>
+<td align="center">90</td>
+<td align="center">$175,934</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Sewickley</td>
+<td align="center">79</td>
+<td align="center">$139,984</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Aliquippa</td>
+<td align="center">77</td>
+<td align="center">$46,954</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Cranberry Township</td>
+<td align="center">74</td>
+<td align="center">$136,948</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Gibsonia</td>
+<td align="center">67</td>
+<td align="center">$165,913</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Mars</td>
+<td align="center">66</td>
+<td align="center">$60,856</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<p><br> <br></p>
+<hr />
+</div>
+<div id="division-2" class="section level4">
+<h4>Division 2</h4>
+<div style="padding-left:125px;">
+
+
+<div class="tab">
+<p><button class="tablinks" onclick="openTab(event, 'CorpusChristi')">Corpus
+Christi</button>
+<button class="tablinks" onclick="openTab(event, 'Lubbock')">Lubbock</button>
+<button class="tablinks" onclick="openTab(event, 'McAllen')">McAllen</button>
+<button class="tablinks" onclick="openTab(event, 'Midland')">Midland</button>
+<button class="tablinks" onclick="openTab(event, 'DFW')">DFW</button>
+<button class="tablinks" onclick="openTab(event, 'beachh')">VA
+Beach</button>
+<button class="tablinks" onclick="openTab(event, 'North')">Northern
+VA</button>
+<button class="tablinks" onclick="openTab(event, 'Lexington')">Lexington</button>
+<button class="tablinks" onclick="openTab(event, 'Orlando')">Orlando</button>
+<button class="tablinks" onclick="openTab(event, 'Baton Rouge')">Baton
+Rouge</button>
+<button class="tablinks" onclick="openTab(event, 'Lafayette')">Lafayette</button>
+<button class="tablinks" onclick="openTab(event, 'Northshore')">Northshore</button>
+<button class="tablinks" onclick="openTab(event, 'Chicago')">Chicago
+North</button>
+<button class="tablinks" onclick="openTab(event, 'Chicagos')">Chicago
+South</button></p>
+</div>
+<div id="CorpusChristi" class="tabcontent">
+<p>
+<p><strong>Corpus Christi</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Corpus Christi</td>
+<td align="center">1,409</td>
+<td align="center">$79,398</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Portland</td>
+<td align="center">111</td>
+<td align="center">$103,940</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Kingsville</td>
+<td align="center">53</td>
+<td align="center">$60,082</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Victoria</td>
+<td align="center">42</td>
+<td align="center">$76,449</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Robstown</td>
+<td align="center">34</td>
+<td align="center">$82,715</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Ingleside</td>
+<td align="center">31</td>
+<td align="center">$79,263</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Sinton</td>
+<td align="center">24</td>
+<td align="center">$56,061</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Aransas Pass</td>
+<td align="center">22</td>
+<td align="center">$67,688</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Odem</td>
+<td align="center">15</td>
+<td align="center">$55,427</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Rockport</td>
+<td align="center">13</td>
+<td align="center">$98,743</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Lubbock" class="tabcontent">
+<p>
+<p><strong>Lubbock</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Lubbock</td>
+<td align="center">654</td>
+<td align="center">$76 311</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Wolfforth</td>
+<td align="center">41</td>
+<td align="center">$96,910</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Levelland</td>
+<td align="center">7</td>
+<td align="center">$64,009</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Shallowater</td>
+<td align="center">7</td>
+<td align="center">$79,522</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Idalou</td>
+<td align="center">6</td>
+<td align="center">$64,981</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Slaton</td>
+<td align="center">4</td>
+<td align="center">$60,895</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Brownfield</td>
+<td align="center">3</td>
+<td align="center">$68,965</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Wilson</td>
+<td align="center">2</td>
+<td align="center">$48,220</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Ransom Canyon</td>
+<td align="center">2</td>
+<td align="center">$148,233</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Abernathy</td>
+<td align="center">2</td>
+<td align="center">$75,493</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="McAllen" class="tabcontent">
+<p>
+<p><strong>McAllen</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">McAllen</td>
+<td align="center">414</td>
+<td align="center">$72,732</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Edingburg</td>
+<td align="center">372</td>
+<td align="center">$69,561</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Mission</td>
+<td align="center">245</td>
+<td align="center">$72,732</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Brownsville</td>
+<td align="center">184</td>
+<td align="center">$58,147</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Weslaco</td>
+<td align="center">108</td>
+<td align="center">$63,133</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Pharr</td>
+<td align="center">98</td>
+<td align="center">$56,386</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Harlingen</td>
+<td align="center">67</td>
+<td align="center">$62,435</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">San Juan</td>
+<td align="center">62</td>
+<td align="center">$57,533</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Alamo</td>
+<td align="center">37</td>
+<td align="center">$57,314</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Los Fresnos</td>
+<td align="center">31</td>
+<td align="center">$67,010</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Midland" class="tabcontent">
+<p>
+<p><strong>Midland</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Midland</td>
+<td align="center">930</td>
+<td align="center">$115,425</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Odessa</td>
+<td align="center">678</td>
+<td align="center">$85,992</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Stanton</td>
+<td align="center">20</td>
+<td align="center">$67,879</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Gardendale</td>
+<td align="center">19</td>
+<td align="center">$82,303</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Andrews</td>
+<td align="center">18</td>
+<td align="center">$90,390</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Greenwood</td>
+<td align="center">6</td>
+<td align="center">$106,482</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">West Odessa</td>
+<td align="center">2</td>
+<td align="center">$90,359</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Eynesbury</td>
+<td align="center">1</td>
+<td align="center">$93,477</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Eb</td>
+<td align="center">1</td>
+<td align="center">$76,154</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Goldsmith</td>
+<td align="center">1</td>
+<td align="center">$74,049</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="DFW" class="tabcontent">
+<p>
+<p><strong>Dallas Forth Worth</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Fort Worth</td>
+<td align="center">266</td>
+<td align="center">$90,141</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Haslet</td>
+<td align="center">89</td>
+<td align="center">$204,545</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Argyle</td>
+<td align="center">81</td>
+<td align="center">$168,973</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Northlake</td>
+<td align="center">81</td>
+<td align="center">$173,603</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Keller</td>
+<td align="center">72</td>
+<td align="center">$125,723</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Azle</td>
+<td align="center">62</td>
+<td align="center">$79,425</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Watauga</td>
+<td align="center">61</td>
+<td align="center">$87,573</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Justin</td>
+<td align="center">61</td>
+<td align="center">$111,400</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">North Richland Hills</td>
+<td align="center">61</td>
+<td align="center">$89,282</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Lewisville</td>
+<td align="center">51</td>
+<td align="center">$87,281</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="beachh" class="tabcontent">
+<p>
+<p><strong>VA Beach</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Virginia Beach</td>
+<td align="center">677</td>
+<td align="center">$105,521</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Chesapeake</td>
+<td align="center">400</td>
+<td align="center">$104,765</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Newport News</td>
+<td align="center">277</td>
+<td align="center">$75,634</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Norfolk</td>
+<td align="center">239</td>
+<td align="center">$77,300</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Portsmouth</td>
+<td align="center">238</td>
+<td align="center">$68,483</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Hampton</td>
+<td align="center">230</td>
+<td align="center">$76,834</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Suffolk</td>
+<td align="center">191</td>
+<td align="center">$81,883</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Yorktown</td>
+<td align="center">80</td>
+<td align="center">$113,332</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Williamsburg</td>
+<td align="center">42</td>
+<td align="center">$98,178</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Franklin</td>
+<td align="center">41</td>
+<td align="center">$60,168</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="North" class="tabcontent">
+<p>
+<p><strong>Northern VA</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Manassas</td>
+<td align="center">277</td>
+<td align="center">$120,353</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Leesburg</td>
+<td align="center">161</td>
+<td align="center">$148,700</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Ashburn</td>
+<td align="center">129</td>
+<td align="center">$139,188</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Nokesville</td>
+<td align="center">103</td>
+<td align="center">$120,177</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Fairfax Station</td>
+<td align="center">102</td>
+<td align="center">$133,974</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Haymarket</td>
+<td align="center">77</td>
+<td align="center">$150,715</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Centreville</td>
+<td align="center">72</td>
+<td align="center">$150,471</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Clifton</td>
+<td align="center">65</td>
+<td align="center">$255,646</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Gainesville</td>
+<td align="center">62</td>
+<td align="center">$165,100</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Sterling</td>
+<td align="center">61</td>
+<td align="center">$126,201</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Lexington" class="tabcontent">
+<p>
+<p><strong>Lexington</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Lexington</td>
+<td align="center">908</td>
+<td align="center">$88,901</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Richmond</td>
+<td align="center">208</td>
+<td align="center">$58,658</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Georgetown</td>
+<td align="center">194</td>
+<td align="center">$80,925</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Nicholasville</td>
+<td align="center">158</td>
+<td align="center">$69,626</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Winchester</td>
+<td align="center">83</td>
+<td align="center">$65,334</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Berea</td>
+<td align="center">52</td>
+<td align="center">$63,538</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Versailles</td>
+<td align="center">40</td>
+<td align="center">$73,210</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Frankfort</td>
+<td align="center">39</td>
+<td align="center">$78,841</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Paris</td>
+<td align="center">35</td>
+<td align="center">$62,273</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Danville</td>
+<td align="center">32</td>
+<td align="center">$61,487</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Orlando" class="tabcontent">
+<p>
+<p><strong>Orlando</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Ocala</td>
+<td align="center">647</td>
+<td align="center">$72,449</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Orlando</td>
+<td align="center">87</td>
+<td align="center">$88,128</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Leesburg</td>
+<td align="center">86</td>
+<td align="center">$54,754</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Summerfield</td>
+<td align="center">77</td>
+<td align="center">$70,261</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Eustis</td>
+<td align="center">62</td>
+<td align="center">$68,866</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Belleview</td>
+<td align="center">57</td>
+<td align="center">$55,995</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Mount Dora</td>
+<td align="center">54</td>
+<td align="center">$86,589</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Apopka</td>
+<td align="center">53</td>
+<td align="center">$92,755</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Tavares</td>
+<td align="center">53</td>
+<td align="center">$75,847</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Kissimmee</td>
+<td align="center">47</td>
+<td align="center">$56,291</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Baton Rouge" class="tabcontent">
+<p>
+<p><strong>Baton Rouge</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Baton Rouge</td>
+<td align="center">1045</td>
+<td align="center">$76,684</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Denham Springs</td>
+<td align="center">428</td>
+<td align="center">$97,080</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Gonzales</td>
+<td align="center">281</td>
+<td align="center">$72,363</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Prairieville</td>
+<td align="center">243</td>
+<td align="center">$120,610</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Zachary</td>
+<td align="center">199</td>
+<td align="center">$102,977</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Walker</td>
+<td align="center">128</td>
+<td align="center">$91,800</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Addis</td>
+<td align="center">64</td>
+<td align="center">$92,364</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Baker</td>
+<td align="center">59</td>
+<td align="center">$78,158</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Central</td>
+<td align="center">48</td>
+<td align="center">$101,081</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Geismar</td>
+<td align="center">46</td>
+<td align="center">$129,149</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Lafayette" class="tabcontent">
+<p>
+<p><strong>Lafayette</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Lafayette</td>
+<td align="center">661</td>
+<td align="center">$82,752</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Lake Charles</td>
+<td align="center">296</td>
+<td align="center">$77,410</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Youngsville</td>
+<td align="center">241</td>
+<td align="center">$101,455</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Carencro</td>
+<td align="center">107</td>
+<td align="center">$65,404</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Iowa</td>
+<td align="center">94</td>
+<td align="center">$71,392</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Broussard</td>
+<td align="center">88</td>
+<td align="center">$108,552</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Duson</td>
+<td align="center">68</td>
+<td align="center">$57,117</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Sulphur</td>
+<td align="center">58</td>
+<td align="center">$102,54</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Scott</td>
+<td align="center">48</td>
+<td align="center">$58,880</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Opelousas</td>
+<td align="center">43</td>
+<td align="center">$45,730</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Northshore" class="tabcontent">
+<p>
+<p><strong>Northshore</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Slidell</td>
+<td align="center">531</td>
+<td align="center">$72,707</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Covington</td>
+<td align="center">204</td>
+<td align="center">$92,015</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Mandeville</td>
+<td align="center">161</td>
+<td align="center">$124,624</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Ponchatoula</td>
+<td align="center">144</td>
+<td align="center">$56,855</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Hammond</td>
+<td align="center">111</td>
+<td align="center">$67,801</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Madisonville</td>
+<td align="center">56</td>
+<td align="center">$109,620</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Abita Springs</td>
+<td align="center">29</td>
+<td align="center">$83,656</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Pearl River</td>
+<td align="center">26</td>
+<td align="center">$83,188</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Lacombe</td>
+<td align="center">23</td>
+<td align="center">$85,941</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Robert</td>
+<td align="center">12</td>
+<td align="center">$102,381</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Chicago" class="tabcontent">
+<p>
+<p><strong>Chicago North</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Rockford</td>
+<td align="center">52</td>
+<td align="center">$92,250</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Gurnee</td>
+<td align="center">42</td>
+<td align="center">$128,233</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Des Plaines</td>
+<td align="center">35</td>
+<td align="center">$101,298</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Waukegan</td>
+<td align="center">35</td>
+<td align="center">$76,301</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Arlington Heights</td>
+<td align="center">32</td>
+<td align="center">$131,169</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Crystal Lake</td>
+<td align="center">26</td>
+<td align="center">$113,603</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Chicago</td>
+<td align="center">26</td>
+<td align="center">$100,347</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Grayslake</td>
+<td align="center">24</td>
+<td align="center">$132,339</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Palatine</td>
+<td align="center">23</td>
+<td align="center">$115,071</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Mundelein</td>
+<td align="center">22</td>
+<td align="center">$113,077</td>
+</tr>
+</tbody>
+</table>
+</span>
+</div>
+<p></a></p>
+<div id="Chicagos" class="tabcontent">
+<p><strong>Chicago South</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Rank</strong></th>
+<th align="center"><strong>City</strong></th>
+<th align="center"><strong>No. Customers</strong></th>
+<th align="center"><strong>Avg Income</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">Naperville</td>
+<td align="center">96</td>
+<td align="center">$171,081</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">Glen Ellyn</td>
+<td align="center">93</td>
+<td align="center">$180,23</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">Wheaton</td>
+<td align="center">75</td>
+<td align="center">$147,688</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">Aurora</td>
+<td align="center">71</td>
+<td align="center">$102,873</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">Plainfield</td>
+<td align="center">50</td>
+<td align="center">$154,421</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">Elgin</td>
+<td align="center">44</td>
+<td align="center">$93,025</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">Bartlett</td>
+<td align="center">44</td>
+<td align="center">$128,938</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">Lombard</td>
+<td align="center">41</td>
+<td align="center">$108,442</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">Joliet</td>
+<td align="center">39</td>
+<td align="center">$92,440</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">Schaumburg</td>
+<td align="center">32</td>
+<td align="center">$104,578</td>
+</tr>
+</tbody>
+</table>
+<p></span></p>
+</div>
+<p></a></p>
+<p><br> <br></p>
+<hr />
+</div>
+</div>
+
+<br><br><br><br>
+
+<p> Sources:  <a href="https://analytics.google.com">Google Analytics</a>,                                            <a href="https://ads.google.com/">Google Ads</a>,                                                       <a href="https://www.bls.gov/"> U.S. BUREAU OF LABOR STATISTICS <a/>,                                   <a href= "https://www.census.gov/data.html/" >United States Census Bureau </a>,
+              <a href= "https://datausa.io/"              > DATA USA</a></p>
+
+<p> Contact: <span style="color:#0c2439"> leonardo.urbiola@fox-pest.com</span> or <span style="color:#0c2439"> steven.grover@fox-pest.com</span>
+<br><br>
+
+ <div style="float: right">
+ <br><br>
+<img align="center" src="Logo.png" alt="Fox" width="150" />
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
