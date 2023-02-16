@@ -1,5 +1,5 @@
 ---
-title: "Avg Income"
+title: "Average Income"
 output: 
   html_document: 
     toc: true
@@ -43,7 +43,6 @@ library(RColorBrewer)
 ----
 This report shows the income average from top 10 cities with the most customers per branch in the year 2022. In 2022 there were a total of **57,517** customers company wide.
 ----
----------
 
 ### Customers Data {.tabset .tabset-fade .tabset-pills}
 
@@ -52,6 +51,7 @@ This report shows the income average from top 10 cities with the most customers 
 par(mai=c(0,0,0,0))
 boxplot(uptake ~ Treatment, data=CO2, yaxt='n', col='#FF8365')
 ```
+
 </div>
 
 
@@ -259,7 +259,7 @@ boxplot(uptake ~ Treatment, data=CO2, yaxt='n', col='#FF8365')
 |5       | Princeton    |  104  | $257,390
 |6       |   Hillsborough Township        |   92              | $176,371
 |7       |   Ewing Township        |      71           | $92,374
-|8       |   Delran        |       47          | 08075 
+|8       |   Delran        |       47          | $117,847 
 |9       |  Lawrence Township         |       46          | $140,329
 |10      |  Flemington         |    45             | $102,121
 
@@ -455,10 +455,10 @@ knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
 |4       | Victoria   | 42 |$76,449
 |5       | Robstown | 34 | $82,715 
 |6       | Ingleside          |       31          |$79,263
-|7       |  Sinton         |     24            |78387
+|7       |  Sinton         |     24            |$56,061
 |8       |   Aransas Pass        |       22          |$67,688
 |9       |  Odem         |    15             |$55,427
-|10      |  Rockport         |    13             |78382 
+|10      |  Rockport         |    13             |$98,743 
 
 
 
@@ -527,9 +527,9 @@ knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
 |3       | Stanton  | 20 |  $67,879 
 |4       | Gardendale | 19 | $82,303
 |5       | Andrews | 18 | $90,390 
-|6       | Greenwood          |      6           | 76246 
+|6       | Greenwood          |      6           | $106,482 
 |7       | West Odessa          |     2            | $90,359 
-|8       | Eynesbury          |      1           | $93,477v 
+|8       | Eynesbury          |      1           | $93,477
 |9       |Eb         |       1          |$76,154 
 |10      |    Goldsmith       |      1           | $74,049
 
@@ -745,7 +745,7 @@ knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
 
 |**Rank**| **City** | **No. Customers** |**Avg Income** 
 |:------:|:--------:|:------------------:|:--------:|
-|1       | Rockford | $92,250 
+|1       | Rockford | 52 | $92,250 
 |2       | Gurnee   | 42 | $128,233
 |3       | Des Plaines | 35 | $101,298
 |4       | Waukegan    | 35 | $76,301
