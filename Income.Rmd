@@ -1,0 +1,796 @@
+---
+title: "Avg Income"
+output: 
+  html_document: 
+    toc: true
+    theme: cerulean
+---
+
+
+```{r, include=FALSE}
+library(tidyverse)
+library(plotly)
+library(mosaic)
+library(RColorBrewer)
+```
+
+<script type="text/javascript">
+ function showhide(id) {
+    var e = document.getElementById(id);
+    e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+ }
+ 
+ function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+ 
+</script>
+
+
+----
+This report shows the income average for the top 10 cities with the most customers per branch in the year 2022.
+----
+
+
+### Customers Data {.tabset .tabset-fade .tabset-pills}
+
+<div style="float:left;width:125px;">
+```{r, fig.height=1, fig.width=1, echo=FALSE}
+par(mai=c(0,0,0,0))
+boxplot(uptake ~ Treatment, data=CO2, yaxt='n', col='#FF8365')
+```
+</div>
+
+
+**Choose a Division**
+
+#### Division 1
+
+<div style="padding-left:125px;">
+
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Albany')">Albany</button>
+  <button class="tablinks" onclick="openTab(event, 'Buffalo')">Buffalo</button>
+  <button class="tablinks" onclick="openTab(event, 'LongIsland')">Long Island</button>
+  <button class="tablinks" onclick="openTab(event, 'Rochester')">Rochester</button>
+  <button class="tablinks" onclick="openTab(event, 'Syracuse')">Syracuse</button>
+  <button class="tablinks" onclick="openTab(event, 'HudsonValley')">Hudson Valley</button>
+  <button class="tablinks" onclick="openTab(event, 'Harrisburg')">Harrisburg</button>
+  <button class="tablinks" onclick="openTab(event, 'CentralNJ')">Central NJ</button>
+  <button class="tablinks" onclick="openTab(event, 'Providence')">RI - Providence </button>
+  <button class="tablinks" onclick="openTab(event, 'Boston')">Boston</button>
+  <button class="tablinks" onclick="openTab(event, 'Bloomington')">Bloomington</button>
+  <button class="tablinks" onclick="openTab(event, 'CT')">CT</button>
+  <button class="tablinks" onclick="openTab(event, 'Manchester')">Manchester </button>
+  <button class="tablinks" onclick="openTab(event, 'Pittsburgh')">Pittsburgh</button>
+
+</div>
+
+<div id="Albany" class="tabcontent">
+  <p>
+  
+**Albany** 
+
+|**Rank**| **City** | **No. Customers** | **Avg Income**|
+|:------:|:--------:|:------------------:|:--------------:|
+|1       | Albany   | 183   | $72,534
+|2       | Schenectady   | 133   | $64,454
+|3       | Clifton Park   |  124  | $151,429
+|4       | Ballston Spa   |  88  | $113,652
+|5       | Troy    |  74  | $66,570
+|6       | Queensbury | 71 | $109,631
+|7       | Delmar     | 53 | $137,181
+|8       | Latham     | 46 | $106,936
+|9       | Voorheesville | 45 | $123,896
+|10      | Ballston Lake | 42 | $113,652
+
+
+
+</span>
+</div>
+</a>
+
+<div id="Buffalo" class="tabcontent">
+  <p>
+  
+**Buffalo**
+
+|**Rank**| **City** | **No. Customers** | **Avg Income**|
+|:------:|:--------:|:------------------:|:------------:|
+|1       | Buffalo   | 1098   | $61,174
+|2       | Hamburg   | 293   | $103,569
+|3       | Lancaster   |  235  | $74,097
+|4       | Lockport   |  213  | $65,537
+|5       | Grand Island    |  197  | $109,829
+|6       | North Tonawanda          |    190             | $73,259
+|7       | East Amherst          |      169           | $111,468
+|8       | Orchard Park          |     149            | $121,282
+|9       |  Niagara Falls         |    141             | $59,318
+|10      |    West Seneca       |      101           | $84,680
+
+
+</span>
+</div>
+</a>
+
+
+<div id="LongIsland" class="tabcontent">
+  <p>
+  
+**Long Island**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**|
+|:------:|:--------:|:------------------:|:------------:|
+|1       | Bay Shore   | 110| $124,847
+|2       | Baldwin   | 89   | $148,782
+|3       | Huntington   | 84  | $180,119
+|4       | Huntington Station   |  78  |$197,502
+|5       | Shirley    |  57  | $141,151
+|6       | Lindenhurst          |     51            | $121,308
+|7       |Dix Hills           |     50            | $55,606
+|8       | Amityville          |    47             | $115,308
+|9       |  Sayville         |      46           | $167,703
+|10      | Port Jefferson Station          |      46|   $156,875        |
+
+</span>
+</div>
+</a>
+
+
+<div id="Rochester" class="tabcontent">
+  <p>
+  
+**Rochester** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Salary**
+|:------:|:--------:|:------------------:|:------------:|
+|1       | Rochester   | 564| $58,785 |
+|2       | Webster   | 183   | $100,707 |
+|3       | Fairport   | 148  | $106,245 |
+|4       | Pittsford   |  131  | $190,756 |
+|5       | Penfield    |  72  |  $123,604
+|6       | Victor          |    561             | $96,006
+|7       | Irondequoit          |     37        | $86,307
+|8       | West Henrietta          |   37       |  $86,918
+|9       | Hilton          |   33               | $75,254
+|10      | Macedon          |    30             | $83,895
+
+</span>
+</div>
+</a>
+
+<div id="Syracuse" class="tabcontent">
+  <p>
+  
+**Syracuse** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:-------:|
+|1       | Syracuse   | 192| $57,880
+|2       | Baldwinsville   | 81   |  $84,180
+|3       | Liverpool   | 71  | $85,953
+|4       | Cicero   |  38  | $96,908
+|5       | Manlius    |  37  | $127,476
+|6       | Fayetteville          |    29             | $124,065
+|7       | Auburn           |      25           | $108,217
+|8       |   East Syracuse        |      22           | $60,581 
+|9       |       Oswego    |    22             | $79,912
+|10      |   Jamesville        |        20         | $99,628
+
+
+</span>
+</div>
+</a>
+
+
+<div id="HudsonValley" class="tabcontent">
+  <p>
+  
+
+**Hudson Valley** 
+
+|**Rank**| **City** | **No. Customers** | **Avg Income**
+|:------:|:--------:|:------------------:|:-------:|
+|1       | New City   | 71| $161,536
+|2       | White Plains   | 50   | $148,070
+|3       | Poughkeepsie   | 36  | $85,705
+|4       | Carmel Hamlet   |  34  | $131,088 
+|5       | Yonkers    |  30  |  $99,924
+|6       | West Nyack |  30  | $125,695
+|7       | Spring Valley          |     30  | $66,366
+|8       | Nyack          |     27            | $141,890 
+|9       | Mahopac          |   26              | $139,672
+|10      | Brewster          |   26              | $76,315
+
+
+</span>
+</div>
+</a>
+
+<div id="Harrisburg" class="tabcontent">
+  <p>
+  
+**Harrisburg**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Harrisburg   | 328| $92,506
+|2       | Mechanicsburg   | 269   | $80,395
+|3       | York   | 154  |  $81,625
+|4       | Carlisle   |  129  |  $264,092
+|5       | Dillsburg    |  119  | $77,993
+|6       |  Lebanon         |    114     |$88,911
+|7       |  Elizabethtown         |        90   | $77,871
+|8       |   Hanover        |    84             |  $67,802
+|9       |   Camp Hill        |    75             | $77,750
+|10      |  Lancaster         |     63            | $101,199
+
+
+</span>
+</div>
+</a>
+
+
+<div id="CentralNJ" class="tabcontent">
+  <p>
+  
+**Central NJ**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Willingboro   | 163| $95,459
+|2       | Bridgewater Township   | 151   |  $168,911
+|3       | Hamilton Township   | 148  | $39,677
+|4       | Trenton   |  107  | $66,002
+|5       | Princeton    |  104  | $257,390
+|6       |   Hillsborough Township        |   92              | $176,371
+|7       |   Ewing Township        |      71           | $92,374
+|8       |   Delran        |       47          | $117,847 
+|9       |  Lawrence Township         |       46          | $140,329
+|10      |  Flemington         |    45             | $102,121
+
+
+</span>
+</div>
+</a>
+
+
+<div id="Providence" class="tabcontent">
+  <p>
+  
+**Providence** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Cranston   | 169| $95,125
+|2       | Providence   | 136   |  $87,573
+|3       | Plymouth   | 106  | $126,982
+|4       | Warwick   |  105  | $95,546
+|5       | Boston    |  81  | $120,939
+|6       |   Pawtucket        |      76           | $72,925
+|7       |  Johnston         |   53              | $87,570
+|8       |  Tiverton         |   53              | $103,353 
+|9       |  Coventry         |       52          | $102,486 
+|10      |  Woonsocket         |   52              | $65,280
+
+
+</span>
+</div>
+</a>
+
+<div id="Boston" class="tabcontent">
+  <p>
+  
+**Boston** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Haverhill   | 85| $92,934 
+|2       | North Andover   | 58   | $163,568 
+|3       | Salisbury   | 57  | $117,133 
+|4       | Danvers   |  54  | $125,757 
+|5       | Ipswich    |  52  | $165,120 
+|6       |    Woburn       |     49            | $125,532 
+|7       |  Andover         |     48           | $199,008
+|8       |    Reading       |       40          | $163,383 
+|9       |  Saugus        |        40         | $113,521 
+|10      |  Lexington         |    40             | $265,000 
+
+
+</span>
+</div>
+</a>
+
+<div id="Bloomington" class="tabcontent">
+  <p>
+  
+**Bloomington**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Bloomington   | 112| $91,121 
+|2       | Normal   | 76   |  $83,633
+|3       | Champaign   | 38  | $80,535
+|4       | Peoria   |  29  | $81,813 
+|5       | Savoy    |  22  | $105,226 
+|6       |  Urbana         |      15           | $61,558 
+|7       |  Washington        |     10            | $112,991
+|8       | Morton          |      10           | $86,654
+|9       |  Pekin         |    9             | $83,652 
+|10      |  Downs         |    7             | $46,349 
+
+
+</span>
+</div>
+</a>
+
+
+<div id="CT" class="tabcontent">
+  <p>
+  
+**CT**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Trumbull   | 204| $164,046 
+|2       | Norwalk   | 181   | $137,201
+|3       | Shelton   | 180  | $126,860 
+|4       | Stamford   |  178  | $144,516 
+|5       | Fairfield    |  163  | $207,084 
+|6       |   Westport        |      132           | $346,206 
+|7       |   Southington        |     128            | $127,877
+|8       |  Glastonbury        |       128          | $159,100 
+|9       |  South Windsor        |    119             | $151,129 
+|10      |    Stratford       |      119           | $104,119 
+
+
+</span>
+</div>
+</a>
+
+
+<div id="Manchester" class="tabcontent">
+  <p>
+  
+**Manchester**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Nashua   | 227| $101,972 
+|2       | Manchester   | 165   | $83,913
+|3       | Derry   | 155  | $105,247 
+|4       | Londonderry   |  104  | $133,316
+|5       | Bedford    |  91  | $175,443 
+|6       |    Merrimack       |     78            | $130,814 
+|7       |   Salem        |     66            |$113,810 
+|8       |  Hooksett        |      65           | $114,381
+|9       |   Concord        |      54           | $93,357
+|10      |  Windham        |      52           | $194,119
+
+
+</span>
+</div>
+</a>
+
+<div id="Pittsburgh" class="tabcontent">
+  <p>
+  
+**Pittsburgh**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:------:|
+|1       | Pittsburgh   | 323| $80,248
+|2       | Washington   | 113   | $55,219
+|3       | Canonsburg   | 110  | $75,042
+|4       | New Castle   |  98  | $47,194
+|5       | Wexford    |  90  | $175,934
+|6       | Sewickley         |   79              | $139,984
+|7       | Aliquippa          |       77          | $46,954 
+|8       | Cranberry Township         |     74       |  $136,948
+|9       | Gibsonia          |       67          | $165,913
+|10      | Mars          |    66             | $60,856 
+
+
+</span>
+</div>
+</a>
+
+<br>
+<br>
+
+```{r echo=FALSE, fig.align='right', message=FALSE, warning=FALSE, out.height="10%", out.width="10%", paged.print=FALSE}
+knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
+```
+
+
+----
+
+#### Division 2 
+
+<div style="padding-left:125px;">
+
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'CorpusChristi')">Corpus Christi</button>
+  <button class="tablinks" onclick="openTab(event, 'Lubbock')">Lubbock</button>
+  <button class="tablinks" onclick="openTab(event, 'McAllen')">McAllen</button>
+  <button class="tablinks" onclick="openTab(event, 'Midland')">Midland</button>
+  <button class="tablinks" onclick="openTab(event, 'DFW')">DFW</button>
+  <button class="tablinks" onclick="openTab(event, 'beachh')">VA Beach</button>
+  <button class="tablinks" onclick="openTab(event, 'North')">Northern VA</button>
+  <button class="tablinks" onclick="openTab(event, 'Lexington')">Lexington</button>
+  <button class="tablinks" onclick="openTab(event, 'Orlando')">Orlando</button>
+  <button class="tablinks" onclick="openTab(event, 'Baton Rouge')">Baton Rouge</button>
+  <button class="tablinks" onclick="openTab(event, 'Lafayette')">Lafayette</button>
+  <button class="tablinks" onclick="openTab(event, 'Northshore')">Northshore</button>
+  <button class="tablinks" onclick="openTab(event, 'Chicago')">Chicago North</button>
+  <button class="tablinks" onclick="openTab(event, 'Chicagos')">Chicago South</button>
+
+</div>
+
+<div id="CorpusChristi" class="tabcontent">
+  <p>
+  
+**Corpus Christi** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Corpus Christi| 1,409| $79,398 
+|2       | Portland | 111 |$103,940
+|3       | Kingsville | 53 |$60,082
+|4       | Victoria   | 42 |$76,449
+|5       | Robstown | 34 | $82,715 
+|6       | Ingleside          |       31          |$79,263
+|7       |  Sinton         |     24            |$56,061
+|8       |   Aransas Pass        |       22          |$67,688
+|9       |  Odem         |    15             |$55,427
+|10      |  Rockport         |    13             |$98,743 
+
+
+
+</span>
+</div>
+</a>
+
+
+<div id="Lubbock" class="tabcontent">
+  <p>
+  
+**Lubbock**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Lubbock | 654 |$76 311
+|2       | Wolfforth |41 | $96,910
+|3       | Levelland | 7  | $64,009
+|4       | Shallowater| 7 | $79,522
+|5       | Idalou |6 | $64,981
+|6       |  Slaton         |       4          | $60,895 
+|7       |   Brownfield        |    3             | $68,965 
+|8       |   Wilson        |         2        | $48,220 
+|9       |  Ransom Canyon         |   2 |$148,233
+|10      |   Abernathy        |        2         | $75,493
+
+
+</span>
+</div>
+</a>
+
+
+<div id="McAllen" class="tabcontent">
+  <p>
+  
+**McAllen** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | McAllen | 414 | $72,732
+|2       | Edingburg | 372 | $69,561
+|3       | Mission | 245 | $72,732
+|4       | Brownsville | 184 | $58,147
+|5       | Weslaco | 108                      | $63,133
+|6       |  Pharr         | 98                | $56,386 
+|7       | Harlingen         |      67        | $62,435
+|8       |  San Juan         |      62        | $57,533
+|9       |   Alamo        |    37             | $57,314 
+|10      |   Los Fresnos        |      31     |$67,010
+
+
+</span>
+</div>
+</a>
+
+
+<div id="Midland" class="tabcontent">
+  <p>
+  
+**Midland** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:--------:|:----------:|:--------:|
+|1       | Midland  | 930 | $115,425
+|2       | Odessa    | 678 | $85,992
+|3       | Stanton  | 20 |  $67,879 
+|4       | Gardendale | 19 | $82,303
+|5       | Andrews | 18 | $90,390 
+|6       | Greenwood          |      6           | $106,482 
+|7       | West Odessa          |     2            | $90,359 
+|8       | Eynesbury          |      1           | $93,477
+|9       |Eb         |       1          |$76,154 
+|10      |    Goldsmith       |      1           | $74,049
+
+
+
+</span>
+</div>
+</a>
+
+
+
+
+<div id="DFW" class="tabcontent">
+  <p>
+  
+**Dallas Forth Worth**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Fort Worth   | 266   | $90,141
+|2       | Haslet   | 89   | $204,545
+|3       | Argyle   |  81  | $168,973
+|4       | Northlake   |  81  | $173,603
+|5       | Keller    |  72  | $125,723 
+|6       |  Azle         |       62          |$79,425 
+|7       |  Watauga         |       61          | $87,573
+|8       |  Justin         |      61           | $111,400
+|9       |  North Richland Hills         |     61            | $89,282
+|10      |  Lewisville         |     51            | $87,281
+
+
+</span>
+</div>
+</a>
+  
+
+
+<div id="beachh" class="tabcontent">
+  <p>
+  
+**VA Beach** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       |Virginia Beach|677 | $105,521
+|2       |Chesapeake | 400 | $104,765
+|3       | Newport News |  277 | $75,634
+|4       | Norfolk | 239 | $77,300
+|5       |Portsmouth | 238 | $68,483
+|6       |  Hampton         |  230               | $76,834
+|7       |  Suffolk         |     191            | $81,883
+|8       |       Yorktown    |   80              |$113,332
+|9       |       Williamsburg    |      42           |$98,178
+|10      |     Franklin      |      41           |$60,168 
+
+</span>
+</div>
+</a>
+
+
+<div id="North" class="tabcontent">
+  <p>
+  
+**Northern VA**
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Manassas | 277 | $120,353
+|2       | Leesburg | 161 | $148,700
+|3       | Ashburn | 129 | $139,188
+|4       |Nokesville| 103 | $120,177
+|5       |Fairfax Station |102| $133,974
+|6       |  Haymarket         |     77            | $150,715
+|7       | Centreville          |     72            | $150,471
+|8       | Clifton          |      65           | $255,646
+|9       |    Gainesville       |    62              |$165,100 
+|10      |   Sterling        |     61            | $126,201
+
+</span>
+</div>
+</a>
+
+
+
+<div id="Lexington" class="tabcontent">
+  <p>
+  
+**Lexington** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       |Lexington |908 | $88,901
+|2       |Richmond  | 208 | $58,658
+|3       | Georgetown | 194 | $80,925
+|4       | Nicholasville | 158 | $69,626
+|5       |Winchester | 83 | $65,334
+|6       |   Berea        |  52               | $63,538
+|7       |    Versailles       |   40              | $73,210
+|8       |  Frankfort         |    39             | $78,841
+|9       |   Paris        |      35           |$62,273
+|10      |   Danville        |    32             | $61,487
+
+
+</span>
+</div>
+</a>
+
+
+<div id="Orlando" class="tabcontent">
+  <p>
+  
+**Orlando** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Ocala | 647 | $72,449
+|2       | Orlando | 87 | $88,128
+|3       | Leesburg | 86 | $54,754
+|4       | Summerfield | 77 | $70,261
+|5       | Eustis | 62 | $68,866
+|6       |   Belleview        |      57           | $55,995
+|7       |  Mount Dora         |     54            | $86,589
+|8       |  Apopka         |      53           |  $92,755
+|9       | Tavares          |  53               | $75,847
+|10      |  Kissimmee         |    47             | $56,291
+ 
+ 
+</span>
+</div>
+</a>
+
+
+
+<div id="Baton Rouge" class="tabcontent">
+  <p>
+  
+**Baton Rouge** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       |Baton Rouge | 1045 | $76,684 
+|2       | Denham Springs | 428 | $97,080
+|3       |Gonzales | 281 | $72,363
+|4       | Prairieville | 243 | $120,610 
+|5       | Zachary | 199 | $102,977 
+|6       |    Walker       |    128             | $91,800
+|7       |   Addis        |        64         | $92,364
+|8       |    Baker       |     59            | $78,158
+|9       |   Central        |       48          | $101,081
+|10      |  Geismar         |     46           | $129,149
+
+</span>
+</div>
+</a>
+
+
+
+<div id="Lafayette" class="tabcontent">
+  <p>
+  
+**Lafayette** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Lafayette | 661 | $82,752
+|2       | Lake Charles | 296 | $77,410
+|3       | Youngsville | 241 | $101,455
+|4       | Carencro  |107 | $65,404
+|5       |Iowa  | 94 | $71,392
+|6       |  Broussard         |       88          | $108,552
+|7       |   Duson        |      68           | $57,117
+|8       |  Sulphur         |     58            | $102,54
+|9       |  Scott         |       48          |$58,880 
+|10      | Opelousas         |     43            |$45,730 
+
+
+</span>
+</div>
+</a>
+
+
+
+<div id="Northshore" class="tabcontent">
+  <p>
+  
+**Northshore** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income**
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Slidell | 531 | $72,707
+|2       | Covington |  204 | $92,015
+|3       | Mandeville |161 | $124,624
+|4       | Ponchatoula | 144 | $56,855
+|5       | Hammond  | 111 | $67,801
+|6       |  Madisonville        |       56          | $109,620
+|7       |   Abita Springs        |     29            | $83,656
+|8       |  Pearl River         |      26           | $83,188
+|9       | Lacombe         |  23               | $85,941 
+|10      | Robert          |      12           | $102,381
+
+
+</span>
+</div>
+</a>
+
+
+
+
+<div id="Chicago" class="tabcontent">
+  <p>
+  
+**Chicago North** 
+
+|**Rank**| **City** | **No. Customers** |**Avg Income** 
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Rockford | 52 | $92,250 
+|2       | Gurnee   | 42 | $128,233
+|3       | Des Plaines | 35 | $101,298
+|4       | Waukegan    | 35 | $76,301
+|5       | Arlington Heights |32 | $131,169 
+|6       |  Crystal Lake         |   26              | $113,603
+|7       |  Chicago         |      26           | $100,347
+|8       |  Grayslake         |      24           | $132,339
+|9       |   Palatine        |     23            | $115,071
+|10      |  Mundelein        |      22           | $113,077
+ 
+
+</span>
+</div>
+</a>
+
+
+
+
+<div id="Chicagos" class="tabcontent">
+  
+**Chicago South** 
+
+
+|**Rank**| **City** | **No. Customers** |**Avg Income** 
+|:------:|:--------:|:------------------:|:--------:|
+|1       | Naperville | 96 | $171,081
+|2       |Glen Ellyn | 93 | $180,23 
+|3       | Wheaton  | 75 | $147,688
+|4       |Aurora  | 71 | $102,873
+|5       |Plainfield |50 | $154,421
+|6       |  Elgin         |        44         | $93,025
+|7       |  Bartlett        |      44           | $128,938
+|8       | Lombard          |    41             | $108,442
+|9       |  Joliet         |      39          | $92,440
+|10      |  Schaumburg         |      32           | $104,578
+
+
+</span>
+</div>
+</a>
+
+<br>
+<br>
+
+```{r echo=FALSE, fig.align='right', message=FALSE, warning=FALSE, out.height="10%", out.width="10%", paged.print=FALSE}
+knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/navy.png"))
+```
+
+
+----
+
