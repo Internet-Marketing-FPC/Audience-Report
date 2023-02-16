@@ -10,7 +10,7 @@ navbar:
     - text: "Branch Comparison"
       href: Branch.html
     - text: "Avg Income"
-      href: avg_income.html
+      href: Income.html
     - text: "Company Wide Summary"
       href: Overall.html
 
