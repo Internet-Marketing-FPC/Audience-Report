@@ -9,8 +9,11 @@ navbar:
       href: about.html
     - text: "Branch Comparison"
       href: Branch.html
+    - text: "Avg Income"
+      href: avg_income.html
     - text: "Company Wide Summary"
       href: Overall.html
+
 output:
   html_document:
     theme: cerulean
