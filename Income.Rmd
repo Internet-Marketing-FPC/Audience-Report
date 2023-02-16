@@ -409,9 +409,6 @@ boxplot(uptake ~ Treatment, data=CO2, yaxt='n', col='#FF8365')
 <br>
 <br>
 
-```{r echo=FALSE, fig.align='right', message=FALSE, warning=FALSE, out.height="10%", out.width="10%", paged.print=FALSE}
-knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
-```
 
 
 ----
@@ -787,9 +784,6 @@ knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/cola.png"))
 <br>
 <br>
 
-```{r echo=FALSE, fig.align='right', message=FALSE, warning=FALSE, out.height="10%", out.width="10%", paged.print=FALSE}
-knitr::include_graphics(c("/users/leonardo.urbiola_fox/Downloads/navy.png"))
-```
 
 
 ----
